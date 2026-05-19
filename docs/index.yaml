@@ -3,7 +3,7 @@ entries:
   border0-connector:
   - apiVersion: v2
     appVersion: latest
-    created: "2026-04-02T15:40:44.453754-07:00"
+    created: "2026-05-19T15:46:29.038937-07:00"
     description: Helm chart for deploying the Border0 Connector
     digest: a496ac1c374680ac39dacfaeb73f7502c9254ddb42ffd353417fea8491636fde
     name: border0-connector
@@ -13,7 +13,7 @@ entries:
     version: 0.6.0
   - apiVersion: v2
     appVersion: latest
-    created: "2026-04-02T15:40:44.453633-07:00"
+    created: "2026-05-19T15:46:29.038821-07:00"
     description: Helm chart for deploying the Border0 Connector
     digest: a0ac264bff0c1ef145d3a574123b377e9a39f663aceaf2d922642aa2858a39df
     name: border0-connector
@@ -23,7 +23,7 @@ entries:
     version: 0.5.0
   - apiVersion: v2
     appVersion: latest
-    created: "2026-04-02T15:40:44.45352-07:00"
+    created: "2026-05-19T15:46:29.038674-07:00"
     description: Helm chart for deploying the Border0 Connector
     digest: afb6048d13b4266a58b5cb190fd1dd31c64493fe6be79fcf2c1b6521d9e3ca86
     name: border0-connector
@@ -33,7 +33,7 @@ entries:
     version: 0.4.0
   - apiVersion: v2
     appVersion: latest
-    created: "2026-04-02T15:40:44.453406-07:00"
+    created: "2026-05-19T15:46:29.038528-07:00"
     description: Helm chart for deploying the Border0 Connector
     digest: aaaf7628a453b0b513ef6246099b94aaa9837efb4f438bc5deacd38c8c9998f7
     name: border0-connector
@@ -43,7 +43,7 @@ entries:
     version: 0.3.1
   - apiVersion: v2
     appVersion: latest
-    created: "2026-04-02T15:40:44.45322-07:00"
+    created: "2026-05-19T15:46:29.03831-07:00"
     description: Helm chart for deploying the Border0 Connector
     digest: bb4066f82aafc652ca5bdb1167f0566910b76735d6a8a9a85b97eedd56167dee
     name: border0-connector
@@ -53,7 +53,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: latest
-    created: "2026-04-02T15:40:44.453121-07:00"
+    created: "2026-05-19T15:46:29.03774-07:00"
     description: Helm chart for deploying the Border0 Connector
     digest: e55e26d905f398f3c9d3e7e167c1a9c0fe7f7115d4bc45ff842efae4f760048d
     name: border0-connector
@@ -63,7 +63,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: latest
-    created: "2026-04-02T15:40:44.453015-07:00"
+    created: "2026-05-19T15:46:29.037407-07:00"
     description: Helm chart for deploying the Border0 Connector
     digest: 365f6a500fdee1024e0f0a4eb31f222a204aa243214edee48abb6111693fd51a
     name: border0-connector
@@ -74,7 +74,17 @@ entries:
   tailzero-connector:
   - apiVersion: v2
     appVersion: latest
-    created: "2026-04-02T15:40:44.453873-07:00"
+    created: "2026-05-19T15:46:29.039169-07:00"
+    description: Helm chart for deploying the Tailzero Connector
+    digest: 513e639f21d3ed316a3d7a6a4e2bb5b67e8a5aa299e98a72d3ebe59a1eb7e920
+    name: tailzero-connector
+    type: application
+    urls:
+    - https://borderzero.github.io/helm-charts/tailzero-connector-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: latest
+    created: "2026-05-19T15:46:29.039058-07:00"
     description: Helm chart for deploying the Tailzero Connector
     digest: 0bf3e23f0a8514ee3c82532fdc8ace1a2141f402134bf01a253516c49d8a6ba6
     name: tailzero-connector
@@ -82,4 +92,4 @@ entries:
     urls:
     - https://borderzero.github.io/helm-charts/tailzero-connector-0.1.0.tgz
     version: 0.1.0
-generated: "2026-04-02T15:40:44.452821-07:00"
+generated: "2026-05-19T15:46:29.036864-07:00"
