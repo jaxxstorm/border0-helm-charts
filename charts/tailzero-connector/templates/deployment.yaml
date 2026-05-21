@@ -34,9 +34,19 @@ spec:
             - "-hostname={{ .Release.Name }}"
 {{- end }}
             - "-statedir=/var/lib/tailzero"
+          {{- with .Values.extraEnv }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: tailzero-state
               mountPath: /var/lib/tailzero
+            {{- with .Values.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
       volumes:
         - name: tailzero-state
           emptyDir: {}
+        {{- with .Values.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}

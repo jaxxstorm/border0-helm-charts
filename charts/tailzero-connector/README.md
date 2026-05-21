@@ -106,3 +106,7 @@ helm upgrade tailzero-connector border0/tailzero-connector \
 | `serviceAccount.name` | string | `""` | Service account name (auto-generated if empty) |
 | `rbac.clusterRoleMode` | string | `"api-admin"` | ClusterRole mode: `"api-admin"` or `"none"` |
 | `rbac.name` | string | `""` | ClusterRole name (auto-generated if empty) |
+| `serviceAccount.annotations` | object | `{}` | Annotations to add to the ServiceAccount (e.g. for AWS IRSA, GCP Workload Identity, Azure Workload Identity) |
+| `extraEnv` | list | `[]` | Extra environment variables for the connector container (standard k8s env schema) |
+| `extraVolumes` | list | `[]` | Extra volumes attached to the pod |
+| `extraVolumeMounts` | list | `[]` | Extra volume mounts on the connector container |

@@ -8,6 +8,12 @@ image:
 serviceAccount:
   # Auto-generated from release name if not set
   name: ""
+  # Annotations to add to the ServiceAccount
+  # Useful for cloud IAM integration, e.g.:
+  #   AWS IRSA:              eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/my-role
+  #   GCP Workload Identity: iam.gke.io/gcp-service-account: my-sa@my-project.iam.gserviceaccount.com
+  #   Azure Workload Identity: azure.workload.identity/client-id: <client-id>
+  annotations: {}
 
 rbac:
   # ClusterRole mode: "api-admin" or "none"
@@ -22,3 +28,10 @@ config:
   inviteCode: ""
   # Connector hostname. Defaults to the Helm release name if not set.
   hostname: ""
+
+# Extra environment variables for the connector container (standard k8s env schema)
+extraEnv: []
+# Extra volumes attached to the pod
+extraVolumes: []
+# Extra volume mounts on the connector container
+extraVolumeMounts: []
