@@ -1,8 +1,9 @@
+{{- if and .Values.config.inviteCode (not .Values.config.cache.ssmPath) }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: {{ include "tailzero-connector.generatedRoleName" . }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ include "tailzero-connector.cacheK8sNamespace" . }}
   labels:
     {{- include "tailzero-connector.labels" . | nindent 4 }}
 subjects:
@@ -13,3 +14,4 @@ roleRef:
   kind: Role
   name: {{ include "tailzero-connector.generatedRoleName" . }}
   apiGroup: rbac.authorization.k8s.io
+{{- end }}

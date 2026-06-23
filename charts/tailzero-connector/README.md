@@ -22,6 +22,15 @@ The connector will exchange the invite code for credentials (connector token + T
 and persist them in a Kubernetes secret automatically. On restart, credentials are loaded from
 the secret — no re-exchange needed.
 
+You can also deploy with an existing Border0 connector token. When using a token directly,
+provide either a Tailscale auth key or Tailscale identity federation credentials:
+
+```bash
+helm install tailzero-connector border0/tailzero-connector \
+  --set config.token="YOUR_CONNECTOR_TOKEN" \
+  --set config.tsAuthKey="YOUR_TAILSCALE_AUTH_KEY"
+```
+
 ## Advanced Configuration
 
 ### Custom Container Image
@@ -40,6 +49,60 @@ By default the connector uses the Helm release name as its hostname. Override it
 helm install tailzero-connector border0/tailzero-connector \
   --set config.inviteCode="YOUR_INVITE_CODE" \
   --set config.hostname="my-connector"
+```
+
+### Tailscale Control Plane
+
+Use `config.tsControlUrl` for self-hosted deployments:
+
+```bash
+helm install tailzero-connector border0/tailzero-connector \
+  --set config.inviteCode="YOUR_INVITE_CODE" \
+  --set config.tsControlUrl="https://headscale.example.com"
+```
+
+### Tailscale Identity Federation
+
+When using `config.token` without `config.tsAuthKey`, provide both identity federation values:
+
+```bash
+helm install tailzero-connector border0/tailzero-connector \
+  --set config.token="YOUR_CONNECTOR_TOKEN" \
+  --set config.tsIdFedClientId="YOUR_CLIENT_ID" \
+  --set config.tsIdFedToken="YOUR_IDENTITY_FEDERATION_TOKEN"
+```
+
+### Credential Cache
+
+Invite-code installs use a Kubernetes Secret cache by default. Override the cache location with:
+
+```bash
+helm install tailzero-connector border0/tailzero-connector \
+  --set config.inviteCode="YOUR_INVITE_CODE" \
+  --set config.cache.k8s.namespace="tailzero-cache" \
+  --set config.cache.k8s.secretName="tailzero-credentials"
+```
+
+Or use AWS SSM Parameter Store instead:
+
+```bash
+helm install tailzero-connector border0/tailzero-connector \
+  --set config.inviteCode="YOUR_INVITE_CODE" \
+  --set config.cache.ssmPath="/border0/tailzero/connector"
+```
+
+### Startup Env File Directory
+
+Mount credential or secret env files and point the connector at them with `config.configDir`:
+
+```bash
+helm install tailzero-connector border0/tailzero-connector \
+  --set config.inviteCode="YOUR_INVITE_CODE" \
+  --set config.configDir="/etc/tailzero/config" \
+  --set extraVolumes[0].name="tailzero-config" \
+  --set extraVolumes[0].secret.secretName="tailzero-config" \
+  --set extraVolumeMounts[0].name="tailzero-config" \
+  --set extraVolumeMounts[0].mountPath="/etc/tailzero/config"
 ```
 
 ### RBAC Modes
@@ -97,8 +160,19 @@ helm upgrade tailzero-connector border0/tailzero-connector \
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| `config.inviteCode` | string | `""` | Invite code from the Border0 portal (required) |
+| `config.token` | string | `""` | Border0 connector token. Required unless `config.inviteCode` is set |
+| `config.inviteCode` | string | `""` | Invite code from the Border0 portal. Required unless `config.token` is set |
 | `config.hostname` | string | `""` | Connector hostname (defaults to release name) |
+| `config.stateDir` | string | `"/var/lib/tailzero"` | Directory for Tailscale state |
+| `config.configDir` | string | `""` | Directory containing credential and secret env files loaded at startup |
+| `config.tsAuthKey` | string | `""` | Tailscale auth key. Required when using `config.token` unless identity federation credentials are set |
+| `config.tsControlUrl` | string | `""` | Tailscale coordination server URL. Leave empty for the public Tailscale control plane |
+| `config.tsIdFedClientId` | string | `""` | Tailscale identity federation client ID |
+| `config.tsIdFedToken` | string | `""` | Tailscale identity federation token |
+| `config.tsVaultUrl` | string | `""` | TsVault URL for recording uploads |
+| `config.cache.k8s.namespace` | string | `""` | Kubernetes namespace for invite-code credential caching (defaults to release namespace) |
+| `config.cache.k8s.secretName` | string | `""` | Kubernetes secret name for invite-code credential caching (defaults to a generated release-specific name) |
+| `config.cache.ssmPath` | string | `""` | AWS SSM Parameter Store path for invite-code credential caching. When set, SSM caching is used instead of Kubernetes secret caching |
 | `image.repository` | string | `"ghcr.io/borderzero/tailzero"` | Container image repository |
 | `image.tag` | string | `"latest"` | Container image tag |
 | `image.pullPolicy` | string | `"Always"` | Image pull policy |

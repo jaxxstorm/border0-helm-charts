@@ -25,22 +25,49 @@ spec:
 {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
-            - "-border0-invite-code={{ .Values.config.inviteCode }}"
-            - "-cache-k8s-namespace={{ .Release.Namespace }}"
-            - "-cache-k8s-secret-name={{ include "tailzero-connector.generatedSecretName" . }}"
-{{- if .Values.config.hostname }}
-            - "-hostname={{ .Values.config.hostname }}"
-{{- else }}
-            - "-hostname={{ .Release.Name }}"
+{{- if .Values.config.inviteCode }}
+            - {{ printf "-border0-invite-code=%s" .Values.config.inviteCode | quote }}
 {{- end }}
-            - "-statedir=/var/lib/tailzero"
+{{- if .Values.config.token }}
+            - {{ printf "-border0-token=%s" .Values.config.token | quote }}
+{{- end }}
+{{- if and .Values.config.inviteCode .Values.config.cache.ssmPath }}
+            - {{ printf "-cache-ssm-path=%s" .Values.config.cache.ssmPath | quote }}
+{{- else if .Values.config.inviteCode }}
+            - {{ printf "-cache-k8s-namespace=%s" (include "tailzero-connector.cacheK8sNamespace" .) | quote }}
+            - {{ printf "-cache-k8s-secret-name=%s" (include "tailzero-connector.cacheK8sSecretName" .) | quote }}
+{{- end }}
+{{- if .Values.config.configDir }}
+            - {{ printf "-config-dir=%s" .Values.config.configDir | quote }}
+{{- end }}
+{{- if .Values.config.hostname }}
+            - {{ printf "-hostname=%s" .Values.config.hostname | quote }}
+{{- else }}
+            - {{ printf "-hostname=%s" .Release.Name | quote }}
+{{- end }}
+            - {{ printf "-statedir=%s" .Values.config.stateDir | quote }}
+{{- if .Values.config.tsAuthKey }}
+            - {{ printf "-ts-auth-key=%s" .Values.config.tsAuthKey | quote }}
+{{- end }}
+{{- if .Values.config.tsControlUrl }}
+            - {{ printf "-ts-control-url=%s" .Values.config.tsControlUrl | quote }}
+{{- end }}
+{{- if .Values.config.tsIdFedClientId }}
+            - {{ printf "-ts-id-fed-cid=%s" .Values.config.tsIdFedClientId | quote }}
+{{- end }}
+{{- if .Values.config.tsIdFedToken }}
+            - {{ printf "-ts-id-fed-token=%s" .Values.config.tsIdFedToken | quote }}
+{{- end }}
+{{- if .Values.config.tsVaultUrl }}
+            - {{ printf "-ts-vault-url=%s" .Values.config.tsVaultUrl | quote }}
+{{- end }}
           {{- with .Values.extraEnv }}
           env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:
             - name: tailzero-state
-              mountPath: /var/lib/tailzero
+              mountPath: {{ .Values.config.stateDir | quote }}
             {{- with .Values.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}

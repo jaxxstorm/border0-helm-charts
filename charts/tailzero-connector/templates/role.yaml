@@ -1,10 +1,11 @@
+{{- if and .Values.config.inviteCode (not .Values.config.cache.ssmPath) }}
 # The connector requires permission to create/update the credential cache secret
-# in the release namespace (used to persist the connector token and Tailscale auth key).
+# used to persist the connector token and Tailscale auth key.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: {{ include "tailzero-connector.generatedRoleName" . }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ include "tailzero-connector.cacheK8sNamespace" . }}
   labels:
     {{- include "tailzero-connector.labels" . | nindent 4 }}
 rules:
@@ -16,5 +17,6 @@ rules:
   # Allow managing only the specific credential cache secret for this release.
   - apiGroups: [""]
     resources: ["secrets"]
-    resourceNames: ["{{ include "tailzero-connector.generatedSecretName" . }}"]
+    resourceNames: ["{{ include "tailzero-connector.cacheK8sSecretName" . }}"]
     verbs: ["get", "list", "update", "patch"]
+{{- end }}

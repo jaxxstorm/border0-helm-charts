@@ -24,10 +24,38 @@ rbac:
   name: ""
 
 config:
-  # Invite code from the Border0 admin portal (required)
+  # Provide either a Border0 token OR an inviteCode.
+  # If inviteCode is provided, the connector will exchange it for credentials
+  # and can cache them in Kubernetes or AWS SSM Parameter Store.
+  token: ""
   inviteCode: ""
   # Connector hostname. Defaults to the Helm release name if not set.
   hostname: ""
+  # Directory for Tailscale state.
+  stateDir: "/var/lib/tailzero"
+  # Directory containing credential and secret env files loaded by the connector at startup.
+  configDir: ""
+  # Tailscale Auth Key. Required when using config.token unless identity federation credentials are set.
+  tsAuthKey: ""
+  # Tailscale coordination server URL. Leave empty for the public Tailscale control plane.
+  tsControlUrl: ""
+  # Tailscale identity federation client ID. Used with tsIdFedToken when tsAuthKey is not set.
+  tsIdFedClientId: ""
+  # Tailscale identity federation token. Used with tsIdFedClientId when tsAuthKey is not set.
+  tsIdFedToken: ""
+  # TsVault URL for recording uploads.
+  tsVaultUrl: ""
+  cache:
+    k8s:
+      # Kubernetes namespace of the secret for caching invite exchange credentials.
+      # Defaults to the Helm release namespace when empty.
+      namespace: ""
+      # Kubernetes secret name for caching invite exchange credentials.
+      # Defaults to a generated release-specific secret name when empty.
+      secretName: ""
+    # AWS SSM Parameter Store path for caching invite exchange credentials.
+    # When set, the chart uses SSM caching instead of Kubernetes secret caching.
+    ssmPath: ""
 
 # Extra environment variables for the connector container (standard k8s env schema)
 extraEnv: []

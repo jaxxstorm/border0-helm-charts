@@ -87,6 +87,28 @@ Generate the name of the Kubernetes secret used for credential caching
 {{- end }}
 
 {{/*
+Resolve the Kubernetes namespace used for invite-code credential caching.
+*/}}
+{{- define "tailzero-connector.cacheK8sNamespace" -}}
+{{- if .Values.config.cache.k8s.namespace }}
+{{- .Values.config.cache.k8s.namespace }}
+{{- else }}
+{{- .Release.Namespace }}
+{{- end }}
+{{- end }}
+
+{{/*
+Resolve the Kubernetes secret name used for invite-code credential caching.
+*/}}
+{{- define "tailzero-connector.cacheK8sSecretName" -}}
+{{- if .Values.config.cache.k8s.secretName }}
+{{- .Values.config.cache.k8s.secretName }}
+{{- else }}
+{{- include "tailzero-connector.generatedSecretName" . }}
+{{- end }}
+{{- end }}
+
+{{/*
 Check if ClusterRole should be created based on rbac.clusterRoleMode.
 Returns "true" only if mode is "api-admin".
 */}}
