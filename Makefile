@@ -1,6 +1,6 @@
 CHARTS_DIR=charts
 DOCS_DIR=docs
-REPO_URL=https://borderzero.github.io/helm-charts
+REPO_URL=https://jaxxstorm.github.io/border0-helm-charts
 
 .PHONY: package index clean
 
